@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sorteio por cadastrado</title>
+</head>
+<body>
+  <h1>Sorteio por cadastrado</h1>
+
+  <form id="cadastrar-form">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <input type="submit" value="Cadastrar">
+  </form>
+
+  <hr>
+
+  <h2>Cadastrados</h2>
+  <ul id="cadastrados-lista">
+    <!-- Os cadastrados serão exibidos aqui -->
+  </ul>
+
+  <hr>
+
+  <h2>Vencedor do Sorteio</h2>
+  <p id="vencedor"></p>
+
+  <script>
+    // Armazenar os cadastrados
+    var cadastrados = [];
+
+    // Função para cadastrar um participante
+    function cadastrarParticipante(event) {
+      event.preventDefault();
+
+      var nome = document.getElementById("nome").value;
+      var email = document.getElementById("email").value;
+
+      cadastrados.push({
+        nome: nome,
+        email: email
+      });
+
+      exibirCadastrados();
+      document.getElementById("cadastrar-form").reset();
+    }
+
+    // Função para exibir os cadastrados
+    function exibirCadastrados() {
+      var cadastradosLista = document.getElementById("cadastrados-lista");
+      cadastradosLista.innerHTML = "";
+
+      for (var i = 0; i < cadastrados.length; i++) {
+        var participante = cadastrados[i];
+        var li = document.createElement("li");
+        li.textContent = participante.nome + " - " + participante.email;
+        cadastradosLista.appendChild(li);
+      }
+    }
+
+    // Função para realizar o sorteio
+    function realizarSorteio() {
+      if (cadastrados.length > 0) {
+        var vencedorIndex = Math.floor(Math.random() * cadastrados.length);
+        var vencedor = cadastrados[vencedorIndex];
+        document.getElementById("vencedor").textContent = "O vencedor do sorteio é: " + vencedor.nome + " (" + vencedor.email + ")";
+      }
+    }
+
+    // Event listener para o formulário de cadastro
+    document.getElementById("cadastrar-form").addEventListener("submit", cadastrarParticipante);
+
+    // Event listener para o botão de realizar o sorteio
+    document.getElementById("realizar-sorteio-btn").addEventListener("click", realizarSorteio);
+  </script>
+</body>
+</html>
